@@ -1,35 +1,84 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [gameBoard, setGameBoard] = useState<string[]>(Array(9).fill(""));
+  const [currentPlayer, setCurrentPlayer] = useState<"X" | "O">("X");
+  const [gameActive, setGameActive] = useState(true);
+  const [status, setStatus] = useState(`Player X's turn`);
+
+  const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  const handleCellClick = (index: number) => {
+    if (gameBoard[index] !== "" || !gameActive) {
+      return;
+    }
+
+    const newBoard = [...gameBoard];
+    newBoard[index] = currentPlayer;
+    setGameBoard(newBoard);
+
+    // Check for win
+    const hasWon = winningConditions.some(
+      ([a, b, c]) =>
+        newBoard[a] &&
+        newBoard[a] === newBoard[b] &&
+        newBoard[a] === newBoard[c]
+    );
+
+    if (hasWon) {
+      setStatus(`Player ${currentPlayer} wins!`);
+      setGameActive(false);
+      return;
+    }
+
+    // Check for draw
+    if (!newBoard.includes("")) {
+      setStatus("Game ended in a draw!");
+      setGameActive(false);
+      return;
+    }
+
+    // Continue game
+    const nextPlayer = currentPlayer === "X" ? "O" : "X";
+    setCurrentPlayer(nextPlayer);
+    setStatus(`Player ${nextPlayer}'s turn`);
+  };
+
+  const restartGame = () => {
+    setGameBoard(Array(9).fill(""));
+    setCurrentPlayer("X");
+    setGameActive(true);
+    setStatus(`Player X's turn`);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <h1>Tic Tac Toe</h1>
+      <div id="status">{status}</div>
+      <div className="board">
+        {gameBoard.map((cell, index) => (
+          <div
+            key={index}
+            className="cell"
+            onClick={() => handleCellClick(index)}
+          >
+            {cell}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <button onClick={restartGame}>Restart Game</button>
+    </div>
+  );
 }
 
-export default App
+export default App;
