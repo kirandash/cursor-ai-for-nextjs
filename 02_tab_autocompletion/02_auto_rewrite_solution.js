@@ -1,75 +1,38 @@
 // TODO: Rewrite this function using array methods (filter)
 function filterEvenNumbers(numbers) {
-  let result = [];
-  for (let i = 0; i < numbers.length; i++) {
-    if (numbers[i] % 2 === 0) {
-      result.push(numbers[i]);
-    }
-  }
-  return result;
+  return numbers.filter((num) => num % 2 === 0);
 }
 
 // TODO: Rewrite this function using an arrow function
-function multiplyByTwo(x) {
-  return x * 2;
-}
+const multiplyByTwo = (x) => x * 2;
 
 // TODO: Rewrite this class using a factory function pattern
-class Person {
-  constructor(name, age) {
-    this.name = name;
-    this.age = age;
-  }
-
-  toString() {
-    return this.name + " (" + this.age + ")";
-  }
-}
+const Person = (name, age) => ({ name, age });
 
 // TODO: Rewrite this function using template literals
-function greet(name, age) {
-  return "Hello, " + name + "! You are " + age + " years old.";
-}
+const greet = (name, age) => `Hello, ${name}! You are ${age} years old.`;
+
+// TODO: Rewrite this function using Object.fromEntries and map
 
 // TODO: Rewrite this function using Object.fromEntries and map
 function createSquareDict(numbers) {
-  const result = {};
-  for (let num of numbers) {
-    result[num] = num * num;
-  }
-  return result;
+  return Object.fromEntries(numbers.map((num) => [num, num * num]));
 }
 
 // TODO: Rewrite this function using array methods (find)
 function findFirstEven(numbers) {
-  for (let i = 0; i < numbers.length; i++) {
-    if (numbers[i] % 2 === 0) {
-      return numbers[i];
-    }
-  }
-  return null;
+  return numbers.find((num) => num % 2 === 0);
 }
 
 // TODO: Rewrite this class to use static factory methods
-class Rectangle {
-  constructor(width, height) {
-    this.width = width;
-    this.height = height;
-  }
+const Rectangle = (width, height) => ({ width, height });
 
-  area() {
-    return this.width * this.height;
-  }
-}
+const area = (rectangle) => rectangle.width * rectangle.height;
 
 // TODO: Rewrite this function using proper error handling
 function calculateAverage(numbers) {
   if (numbers.length === 0) return 0;
-  let sum = 0;
-  for (let num of numbers) {
-    sum += num;
-  }
-  return sum / numbers.length;
+  return numbers.reduce((sum, num) => sum + num, 0) / numbers.length;
 }
 
 // TODO: Rewrite this function using a higher-order function for validation
@@ -81,44 +44,28 @@ function calculateCircleArea(radius) {
 }
 
 // TODO: Rewrite this class to use private fields and getters/setters
-class BankAccount {
-  constructor(initialBalance) {
-    this.balance = initialBalance;
-  }
-}
+const BankAccount = (initialBalance) => ({ balance: initialBalance });
 
 // TODO: Rewrite this function using rest parameters
-function concatenateStrings(separator) {
-  const args = Array.prototype.slice.call(arguments, 1);
-  return args.join(separator);
-}
+const concatenateStrings = (separator, ...args) => args.join(separator);
 
 // TODO: Rewrite these classes using composition instead of inheritance
-class Vehicle {
-  constructor(make, model, year) {
-    this.make = make;
-    this.model = model;
-    this.year = year;
-  }
-}
+const Vehicle = (make, model, year) => ({ make, model, year });
 
-class Car extends Vehicle {
-  displayInfo() {
-    return this.year + " " + this.make + " " + this.model;
-  }
-}
+const Car = (make, model, year) => ({ make, model, year });
+
+const displayInfo = (car) => `${car.year} ${car.make} ${car.model}`;
 
 // TODO: Rewrite this function using async/await and proper error handling
-function fetchData(url) {
-  return new Promise((resolve) => {
+const fetchData = (url) =>
+  new Promise((resolve) => {
     setTimeout(() => {
       resolve("Data from " + url);
     }, 1000);
   });
-}
 
 // Example usage
-function runExamples() {
+const runExamples = () => {
   console.log(filterEvenNumbers([1, 2, 3, 4, 5, 6]));
   console.log(multiplyByTwo(5));
   console.log(new Person("Alice", 30).toString());
@@ -137,7 +84,7 @@ function runExamples() {
   fetchData("https://api.example.com/data")
     .then(console.log)
     .catch(console.error);
-}
+};
 
 // Run the examples
 runExamples();
